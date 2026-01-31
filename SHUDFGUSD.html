@@ -1808,6 +1808,7 @@
         let mouseY = 0;
         let gridOffsetX = 0;
         let gridOffsetY = 0;
+        let currentPaymentFilter = 'pending'; // Добавляем переменную для отслеживания текущего фильтра
 
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
@@ -1823,6 +1824,18 @@
             
             // Проверка авторизации
             checkAuth();
+            
+            // Слушатель изменений в localStorage для обновления заявок в реальном времени
+            window.addEventListener('storage', function(event) {
+                if (event.key === 'yasplit_payment_requests' && isAdmin) {
+                    // Обновляем заявки если админ на странице админки
+                    const adminPage = document.getElementById('admin');
+                    if (adminPage && adminPage.classList.contains('active')) {
+                        loadPaymentRequests(currentPaymentFilter);
+                        updateCategoryCounts();
+                    }
+                }
+            });
         });
 
         // Grid Animation
@@ -1957,7 +1970,7 @@
                     currentUser = JSON.parse(userData);
                     
                     // Проверяем, является ли пользователь админом
-                    isAdmin = currentUser.telegramUsername === '@admin' || currentUser.isAdmin;
+                    isAdmin = currentUser.telegramUsername === '@admin' || currentUser.isAdmin === true;
                     
                     if (isAdmin) {
                         const adminNavItem = document.getElementById('adminNavItem');
@@ -2067,6 +2080,115 @@
             }
         }
 
+        // Загрузка заявок на оплату
+        function loadPaymentRequests(filter = 'pending') {
+            // Обновляем текущий фильтр
+            currentPaymentFilter = filter;
+            
+            // Загружаем заявки из localStorage
+            paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
+            console.log('Загружено заявок:', paymentRequests.length);
+            
+            // Если админ, обновляем таблицу
+            if (isAdmin) {
+                updatePaymentRequestsTable(filter);
+            }
+            
+            // Обновляем счетчики
+            updateCategoryCounts();
+            updateStats();
+        }
+
+        // Обновление таблицы заявок в админ-панели
+        function updatePaymentRequestsTable(filter = 'pending') {
+            const container = document.getElementById('paymentRequestsTable');
+            if (!container || !isAdmin) return;
+            
+            // Фильтрация заявок
+            let filteredRequests = paymentRequests;
+            if (filter === 'pending') {
+                filteredRequests = paymentRequests.filter(req => req.status === 'pending');
+            } else if (filter === 'confirmed') {
+                filteredRequests = paymentRequests.filter(req => req.status === 'confirmed');
+            } else if (filter === 'cancelled') {
+                filteredRequests = paymentRequests.filter(req => req.status === 'cancelled');
+            }
+            
+            // Сортировка по дате (новые сверху)
+            filteredRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            if (filteredRequests.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>Заявок не найдено</h3>
+                        <div style="max-width: 300px; margin: 0 auto;">
+                            Нет заявок, соответствующих выбранному фильтру
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Пользователь</th>
+                            <th>Сумма</th>
+                            <th>Способ</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filteredRequests.forEach(request => {
+                const date = new Date(request.createdAt);
+                const formattedDate = date.toLocaleDateString('ru-RU');
+                const formattedTime = date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+                
+                html += `
+                    <tr>
+                        <td>
+                            <div style="color: var(--light);">${formattedDate}</div>
+                            <div style="font-size: 12px; color: var(--light-gray);">${formattedTime}</div>
+                        </td>
+                        <td style="font-weight: 600; color: var(--light);">${request.telegramUsername}</td>
+                        <td style="font-weight: 700; color: var(--primary-light);">${formatCurrency(request.amount)} ₽</td>
+                        <td>${request.methodName}</td>
+                        <td>
+                            <span class="status-badge status-${request.status}">
+                                ${request.status === 'pending' ? 'Ожидает' : 
+                                 request.status === 'confirmed' ? 'Подтвержден' : 'Отменен'}
+                            </span>
+                        </td>
+                        <td>
+                            ${request.status === 'pending' ? `
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm" style="background: rgba(16,185,129,0.2); color: var(--success);" onclick="confirmPayment('${request.id}')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-sm" style="background: rgba(239,68,68,0.2); color: var(--danger);" onclick="cancelPayment('${request.id}')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = html;
+        }
+
         // Обновление отображения аккаунтов
         function updateAccountsDisplay() {
             const accountsPage = document.getElementById('accounts');
@@ -2103,6 +2225,7 @@
             const soldCount = accounts.filter(acc => acc.status === 'sold').length;
             const highSplitCount = accounts.filter(acc => acc.split > 100000).length;
             const lowPriceCount = accounts.filter(acc => acc.price < 1000).length;
+            const pendingPayments = paymentRequests.filter(req => req.status === 'pending').length;
             
             // Обновляем бейджи в навигации
             const accountsBadge = document.getElementById('accountsBadge');
@@ -2110,6 +2233,8 @@
             const soldBadge = document.getElementById('soldBadge');
             const highSplitBadge = document.getElementById('highSplitBadge');
             const lowPriceBadge = document.getElementById('lowPriceBadge');
+            const paymentBadge = document.getElementById('paymentBadge');
+            const pendingCountEl = document.getElementById('pendingCount');
             
             if (accountsBadge) {
                 accountsBadge.textContent = totalAccounts;
@@ -2134,6 +2259,15 @@
             if (lowPriceBadge) {
                 lowPriceBadge.textContent = lowPriceCount;
                 lowPriceBadge.style.display = lowPriceCount > 0 ? 'block' : 'none';
+            }
+            
+            if (paymentBadge) {
+                paymentBadge.textContent = pendingPayments;
+                paymentBadge.style.display = pendingPayments > 0 ? 'block' : 'none';
+            }
+            
+            if (pendingCountEl) {
+                pendingCountEl.textContent = pendingPayments;
             }
         }
 
@@ -2225,7 +2359,7 @@
                     id: userId,
                     telegramUsername: telegramUsername,
                     name: telegramUsername.replace('@', ''),
-                    balance: 0, // БАЛАНС 0, а не 5000
+                    balance: 0, // БАЛАНС 0
                     purchasedAccounts: [],
                     totalSpent: 0,
                     transactions: [],
@@ -2246,9 +2380,11 @@
                 // Загружаем аккаунты
                 await loadAccountsFromJSON();
                 
+                // Загружаем заявки
+                loadPaymentRequests();
+                
                 // Показать приложение
                 showApp();
-                loadPaymentRequests();
                 updateStats();
                 loadRecentPurchases();
                 updateCategoryCounts();
@@ -2689,7 +2825,6 @@
             if (totalSpentEl) totalSpentEl.textContent = `${formatCurrency(currentUser.totalSpent || 0)} ₽`;
             
             // Подсчет ожидающих платежей
-            const paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
             const pendingCount = paymentRequests.filter(req => req.status === 'pending').length;
             if (pendingPaymentsEl) pendingPaymentsEl.textContent = pendingCount;
         }
@@ -2859,6 +2994,12 @@
                 paymentRequests.push(paymentRequest);
                 localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
                 
+                // Обновляем локальную переменную
+                window.paymentRequests = paymentRequests;
+                
+                console.log('Заявка создана:', paymentRequest);
+                console.log('Всего заявок:', paymentRequests.length);
+                
                 // Отправка уведомления в Telegram
                 await sendTelegramNotification(
                     `💰 ЗАЯВКА НА ПОПОЛНЕНИЕ\n` +
@@ -2884,7 +3025,7 @@
                 // Если админ в админке, обновить таблицу
                 const adminPage = document.getElementById('admin');
                 if (isAdmin && adminPage && adminPage.classList.contains('active')) {
-                    loadPaymentRequests('pending');
+                    loadPaymentRequests(currentPaymentFilter);
                 }
                 
                 showNotification(`Заявка на пополнение ${formatCurrency(amount)} ₽ создана! Ожидайте подтверждения.`, 'success');
@@ -2894,100 +3035,6 @@
             } finally {
                 hideLoading();
             }
-        }
-
-        // Загрузка заявок на оплату (для админа)
-        function loadPaymentRequests(filter = 'pending') {
-            if (!isAdmin) return;
-            
-            const container = document.getElementById('paymentRequestsTable');
-            if (!container) return;
-            
-            let paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
-            
-            // Фильтрация заявок
-            let filteredRequests = paymentRequests;
-            if (filter === 'pending') {
-                filteredRequests = paymentRequests.filter(req => req.status === 'pending');
-            } else if (filter === 'confirmed') {
-                filteredRequests = paymentRequests.filter(req => req.status === 'confirmed');
-            } else if (filter === 'cancelled') {
-                filteredRequests = paymentRequests.filter(req => req.status === 'cancelled');
-            }
-            
-            // Сортировка по дате (новые сверху)
-            filteredRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            
-            if (filteredRequests.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <h3>Заявок не найдено</h3>
-                        <div style="max-width: 300px; margin: 0 auto;">
-                            Нет заявок, соответствующих выбранному фильтру
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = `
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Пользователь</th>
-                            <th>Сумма</th>
-                            <th>Способ</th>
-                            <th>Статус</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            filteredRequests.forEach(request => {
-                const date = new Date(request.createdAt);
-                const formattedDate = date.toLocaleDateString('ru-RU');
-                const formattedTime = date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
-                
-                html += `
-                    <tr>
-                        <td>
-                            <div style="color: var(--light);">${formattedDate}</div>
-                            <div style="font-size: 12px; color: var(--light-gray);">${formattedTime}</div>
-                        </td>
-                        <td style="font-weight: 600; color: var(--light);">${request.telegramUsername}</td>
-                        <td style="font-weight: 700; color: var(--primary-light);">${formatCurrency(request.amount)} ₽</td>
-                        <td>${request.methodName}</td>
-                        <td>
-                            <span class="status-badge status-${request.status}">
-                                ${request.status === 'pending' ? 'Ожидает' : 
-                                 request.status === 'confirmed' ? 'Подтвержден' : 'Отменен'}
-                            </span>
-                        </td>
-                        <td>
-                            ${request.status === 'pending' ? `
-                                <div style="display: flex; gap: 8px;">
-                                    <button class="btn btn-sm" style="background: rgba(16,185,129,0.2); color: var(--success);" onclick="confirmPayment('${request.id}')">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="btn btn-sm" style="background: rgba(239,68,68,0.2); color: var(--danger);" onclick="cancelPayment('${request.id}')">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += `
-                    </tbody>
-                </table>
-            `;
-            
-            container.innerHTML = html;
         }
 
         // Подтверждение платежа (админ)
@@ -3038,7 +3085,8 @@
                     usersData[request.userId] = user;
                     localStorage.setItem('yasplit_users', JSON.stringify(usersData));
                     
-                    if (currentUser && currentUser.telegramUsername === request.telegramUsername) {
+                    // Если текущий пользователь - это тот, чей баланс пополняем, обновляем его данные
+                    if (currentUser && currentUser.id === request.userId) {
                         currentUser.balance = user.balance;
                         if (!currentUser.transactions) currentUser.transactions = [];
                         currentUser.transactions.push({
@@ -3054,7 +3102,8 @@
                         updateStats();
                     }
                 } else {
-                    if (currentUser && currentUser.telegramUsername === request.telegramUsername) {
+                    // Если пользователь не найден в общем списке, проверяем текущего пользователя
+                    if (currentUser && currentUser.id === request.userId) {
                         currentUser.balance += request.amount;
                         if (!currentUser.transactions) currentUser.transactions = [];
                         currentUser.transactions.push({
@@ -3081,7 +3130,7 @@
                 );
                 
                 // Обновление таблицы заявок
-                loadPaymentRequests('pending');
+                loadPaymentRequests(currentPaymentFilter);
                 updateCategoryCounts();
                 
                 showNotification(`Платеж пользователя ${request.telegramUsername} подтвержден!`, 'success');
@@ -3129,7 +3178,7 @@
                     `Отменил: ${currentUser.telegramUsername}`
                 );
                 
-                loadPaymentRequests('pending');
+                loadPaymentRequests(currentPaymentFilter);
                 updateCategoryCounts();
                 
                 showNotification('Заявка отменена', 'success');
@@ -3148,7 +3197,6 @@
             const container = document.getElementById('paymentHistory');
             if (!container) return;
             
-            let paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
             let userRequests = paymentRequests.filter(req => req.telegramUsername === currentUser.telegramUsername);
             
             userRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -3278,11 +3326,11 @@
             showLoading();
             try {
                 await loadAccountsFromJSON();
+                loadPaymentRequests(currentPaymentFilter);
                 updateStats();
                 updateCategoryCounts();
                 loadRecentPurchases();
                 if (isAdmin) {
-                    loadPaymentRequests('pending');
                     updateAccountsInfo();
                 }
                 const paymentPage = document.getElementById('payment');
@@ -3332,6 +3380,7 @@
             autoRefreshInterval = setInterval(async () => {
                 if (document.body.contains(document.getElementById('app'))) {
                     await loadAccountsFromJSON();
+                    loadPaymentRequests(currentPaymentFilter);
                     updateCategoryCounts();
                 }
             }, CONFIG.AUTO_REFRESH_INTERVAL);
