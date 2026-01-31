@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Все стили остаются такими же как в предыдущем коде */
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
@@ -66,7 +65,6 @@
             position: relative;
         }
 
-        /* Grid Background Animation */
         #gridCanvas {
             position: fixed;
             top: 0;
@@ -78,7 +76,6 @@
             opacity: 0.3;
         }
 
-        /* Notification System */
         .notification-container {
             position: fixed;
             top: 20px;
@@ -151,7 +148,6 @@
             }
         }
 
-        /* Pulse Animation */
         @keyframes pulse {
             0%, 100% {
                 box-shadow: var(--glow-primary);
@@ -161,7 +157,6 @@
             }
         }
 
-        /* Floating Animation */
         @keyframes float {
             0%, 100% {
                 transform: translateY(0);
@@ -171,7 +166,6 @@
             }
         }
 
-        /* Auth Screen */
         .auth-screen {
             display: flex;
             justify-content: center;
@@ -345,13 +339,11 @@
             left: 100%;
         }
 
-        /* App Container */
         .app-container {
             display: none;
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--card-bg);
@@ -519,7 +511,6 @@
             gap: 6px;
         }
 
-        /* Main Content */
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 20px;
@@ -527,7 +518,6 @@
             transition: margin-left 0.3s ease, padding 0.3s ease;
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -671,7 +661,6 @@
             font-size: 13px;
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -724,7 +713,6 @@
             gap: 8px;
         }
 
-        /* Accounts Grid */
         .accounts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -859,7 +847,6 @@
             font-size: 22px;
         }
 
-        /* Categories Tabs */
         .categories-tabs {
             display: flex;
             gap: 10px;
@@ -905,7 +892,6 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Payment Modal */
         .payment-modal {
             position: fixed;
             top: 50%;
@@ -1007,7 +993,6 @@
             color: transparent;
         }
 
-        /* Overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -1027,7 +1012,6 @@
             opacity: 1;
         }
 
-        /* Table Styles */
         .data-table {
             width: 100%;
             border-collapse: separate;
@@ -1089,7 +1073,6 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1127,7 +1110,6 @@
             }
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -1155,7 +1137,6 @@
             color: var(--light);
         }
 
-        /* Recent Purchases */
         .recent-purchases {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -1163,7 +1144,6 @@
             overflow: hidden;
         }
 
-        /* Mobile Responsive */
         @media (max-width: 1024px) {
             .accounts-grid {
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1279,7 +1259,6 @@
             }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -1299,30 +1278,23 @@
             background: var(--primary-light);
         }
 
-        /* Selection */
         ::selection {
             background: var(--primary);
             color: white;
         }
 
-        /* Telegram WebApp Optimizations */
-        .tg-webapp {
-            /* Optimize for Telegram WebApp */
-        }
-
         .tg-webapp .btn,
         .tg-webapp .nav-item,
         .tg-webapp .tab-btn {
-            min-height: 44px; /* Minimum touch target size */
+            min-height: 44px;
         }
 
         .tg-webapp input,
         .tg-webapp select,
         .tg-webapp textarea {
-            font-size: 16px; /* Prevents iOS zoom */
+            font-size: 16px;
         }
 
-        /* Safe area insets for modern phones */
         @supports (padding: max(0px)) {
             .main-content,
             .auth-screen {
@@ -1336,7 +1308,6 @@
             }
         }
 
-        /* Performance optimizations */
         .will-change-transform {
             will-change: transform;
         }
@@ -1345,7 +1316,6 @@
             will-change: opacity;
         }
 
-        /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
@@ -1358,18 +1328,14 @@
     </style>
 </head>
 <body class="tg-webapp">
-    <!-- Grid Background Canvas -->
     <canvas id="gridCanvas"></canvas>
 
-    <!-- Notifications Container -->
     <div class="notification-container" id="notificationContainer"></div>
 
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Payment Modal -->
     <div class="payment-modal" id="paymentModal">
         <div class="modal-header">
             <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">Пополнение баланса</h3>
@@ -1452,10 +1418,8 @@
         </div>
     </div>
     
-    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Auth Screen -->
     <div id="authScreen" class="auth-screen">
         <div class="auth-container">
             <div class="auth-logo">
@@ -1488,9 +1452,7 @@
         </div>
     </div>
 
-    <!-- Main App -->
     <div id="app" class="app-container">
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
                 <div class="logo-icon">Y</div>
@@ -1557,9 +1519,7 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Header -->
             <div class="header">
                 <div style="display: flex; align-items: center; gap: 15px; min-width: 0;">
                     <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
@@ -1587,7 +1547,6 @@
                 </div>
             </div>
 
-            <!-- Dashboard Page -->
             <div id="dashboard" class="content-page active">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -1629,12 +1588,10 @@
                         Последние покупки
                     </h2>
                     <div id="recentPurchases" class="recent-purchases">
-                        <!-- Recent purchases will be loaded here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Accounts Page -->
             <div id="accounts" class="content-page">
                 <div style="margin-bottom: 30px;">
                     <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(90deg, var(--light), var(--primary-light)); -webkit-background-clip: text; background-clip: text; color: transparent;">
@@ -1643,7 +1600,6 @@
                     <p style="color: var(--light-gray);">Полный список всех аккаунтов в системе</p>
                 </div>
 
-                <!-- Quick Stats -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
                     <div style="background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border); text-align: center;">
                         <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px; color: var(--light);" id="totalAccountsCount">0</div>
@@ -1660,11 +1616,9 @@
                 </div>
 
                 <div class="accounts-grid" id="accountsGrid">
-                    <!-- Аккаунты загружаются здесь -->
                 </div>
             </div>
 
-            <!-- Category Page Template -->
             <div id="category" class="content-page" style="display: none;">
                 <div style="margin-bottom: 30px;">
                     <h1 id="categoryTitle" style="font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(90deg, var(--light), var(--primary-light)); -webkit-background-clip: text; background-clip: text; color: transparent;">
@@ -1673,7 +1627,6 @@
                     <p id="categoryDescription" style="color: var(--light-gray);">Описание категории</p>
                 </div>
 
-                <!-- Category Stats -->
                 <div style="background: var(--card-bg); padding: 24px; border-radius: var(--border-radius); border: 1px solid var(--card-border); margin-bottom: 30px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                         <div>
@@ -1688,11 +1641,9 @@
                 </div>
 
                 <div class="accounts-grid" id="categoryGrid">
-                    <!-- Аккаунты категории загружаются здесь -->
                 </div>
             </div>
 
-            <!-- Payment Page -->
             <div id="payment" class="content-page">
                 <div style="margin-bottom: 30px;">
                     <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(90deg, var(--light), var(--primary-light)); -webkit-background-clip: text; background-clip: text; color: transparent;">
@@ -1717,11 +1668,9 @@
                     История платежей
                 </h3>
                 <div id="paymentHistory">
-                    <!-- История платежей загружается здесь -->
                 </div>
             </div>
 
-            <!-- Admin Panel -->
             <div id="admin" class="content-page">
                 <div style="margin-bottom: 30px;">
                     <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(90deg, var(--light), var(--primary-light)); -webkit-background-clip: text; background-clip: text; color: transparent;">
@@ -1757,7 +1706,6 @@
                     </div>
 
                     <div id="paymentRequestsTable">
-                        <!-- Таблица заявок загружается здесь -->
                     </div>
                 </div>
 
@@ -1778,17 +1726,25 @@
                     </div>
                     <div id="adminAccountsInfo"></div>
                 </div>
+
+                <div style="margin-top: 30px; background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
+                    <h4 style="margin-bottom: 10px; color: var(--light);">Отладка</h4>
+                    <button class="btn btn-outline" onclick="debugPaymentRequests()">
+                        <i class="fas fa-bug"></i>
+                        Показать отладку
+                    </button>
+                    <div id="debugInfo" style="margin-top: 10px; font-size: 12px; color: var(--light-gray);"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Конфигурация
         const CONFIG = {
             TELEGRAM_BOT_TOKEN: 'YOUR_BOT_TOKEN_HERE',
             TELEGRAM_CHAT_ID: 'YOUR_CHAT_ID_HERE',
             ACCOUNTS_JSON_URL: 'accounts.json',
-            AUTO_REFRESH_INTERVAL: 45000, // 45 секунд
+            AUTO_REFRESH_INTERVAL: 30000,
             NOTIFICATION_TIMEOUT: 5000,
             MIN_PAYMENT_AMOUNT: 500,
             MAX_PAYMENT_AMOUNT: 100000,
@@ -1797,7 +1753,6 @@
             GRID_ANIMATION_SPEED: 0.5
         };
 
-        // Основные переменные
         let currentUser = null;
         let accounts = [];
         let paymentRequests = [];
@@ -1808,27 +1763,22 @@
         let mouseY = 0;
         let gridOffsetX = 0;
         let gridOffsetY = 0;
-        let currentPaymentFilter = 'pending'; // Добавляем переменную для отслеживания текущего фильтра
+        let currentPaymentFilter = 'pending';
 
-        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
             initGridAnimation();
             initNotifications();
             setupEventListeners();
             
-            // Для GitHub Pages используем относительный путь
             if (window.location.hostname.includes('github.io')) {
                 const repoName = window.location.pathname.split('/')[1];
                 CONFIG.ACCOUNTS_JSON_URL = repoName ? `/${repoName}/accounts.json` : '/accounts.json';
             }
             
-            // Проверка авторизации
             checkAuth();
             
-            // Слушатель изменений в localStorage для обновления заявок в реальном времени
             window.addEventListener('storage', function(event) {
                 if (event.key === 'yasplit_payment_requests' && isAdmin) {
-                    // Обновляем заявки если админ на странице админки
                     const adminPage = document.getElementById('admin');
                     if (adminPage && adminPage.classList.contains('active')) {
                         loadPaymentRequests(currentPaymentFilter);
@@ -1838,7 +1788,6 @@
             });
         });
 
-        // Grid Animation
         function initGridAnimation() {
             const canvas = document.getElementById('gridCanvas');
             if (!canvas) return;
@@ -1856,14 +1805,12 @@
                 const centerX = canvas.width / 2;
                 const centerY = canvas.height / 2;
                 
-                // Параллакс эффект
                 const parallaxX = (mouseX - centerX) / centerX * 10;
                 const parallaxY = (mouseY - centerY) / centerY * 10;
                 
                 gridOffsetX += (parallaxX - gridOffsetX) * 0.05;
                 gridOffsetY += (parallaxY - gridOffsetY) * 0.05;
                 
-                // Вертикальные линии
                 ctx.beginPath();
                 for (let x = -gridOffsetX % CONFIG.GRID_SIZE; x < canvas.width; x += CONFIG.GRID_SIZE) {
                     ctx.moveTo(x, 0);
@@ -1873,7 +1820,6 @@
                 ctx.lineWidth = CONFIG.GRID_LINE_WIDTH;
                 ctx.stroke();
                 
-                // Горизонтальные линии
                 ctx.beginPath();
                 for (let y = -gridOffsetY % CONFIG.GRID_SIZE; y < canvas.height; y += CONFIG.GRID_SIZE) {
                     ctx.moveTo(0, y);
@@ -1900,7 +1846,6 @@
             }
         }
 
-        // Уведомления
         function initNotifications() {
             window.showNotification = function(message, type = 'info', duration = CONFIG.NOTIFICATION_TIMEOUT) {
                 const container = document.getElementById('notificationContainer');
@@ -1950,7 +1895,6 @@
             };
         }
 
-        // Показать/скрыть загрузку
         function showLoading() {
             const overlay = document.getElementById('loadingOverlay');
             if (overlay) overlay.classList.add('active');
@@ -1961,7 +1905,6 @@
             if (overlay) overlay.classList.remove('active');
         }
 
-        // Проверка авторизации
         async function checkAuth() {
             showLoading();
             try {
@@ -1969,15 +1912,14 @@
                 if (userData) {
                     currentUser = JSON.parse(userData);
                     
-                    // Проверяем, является ли пользователь админом
                     isAdmin = currentUser.telegramUsername === '@admin' || currentUser.isAdmin === true;
                     
                     if (isAdmin) {
                         const adminNavItem = document.getElementById('adminNavItem');
                         if (adminNavItem) adminNavItem.style.display = 'flex';
+                        await initializePaymentRequests();
                     }
                     
-                    // Загружаем аккаунты
                     await loadAccountsFromJSON();
                     
                     showApp();
@@ -1985,7 +1927,6 @@
                     updateStats();
                     loadRecentPurchases();
                     
-                    // Запускаем авто-обновление
                     startAutoRefresh();
                     
                     showNotification(`Добро пожаловать, ${currentUser.telegramUsername}!`, 'success');
@@ -1998,7 +1939,23 @@
             }
         }
 
-        // Загрузка аккаунтов из JSON файла
+        async function initializePaymentRequests() {
+            try {
+                const stored = localStorage.getItem('yasplit_payment_requests');
+                if (!stored) {
+                    localStorage.setItem('yasplit_payment_requests', JSON.stringify([]));
+                    console.log('Инициализирован пустой массив заявок');
+                } else {
+                    console.log('Заявки уже существуют в localStorage');
+                }
+                
+                loadPaymentRequests();
+            } catch (error) {
+                console.error('Ошибка инициализации заявок:', error);
+                localStorage.setItem('yasplit_payment_requests', JSON.stringify([]));
+            }
+        }
+
         async function loadAccountsFromJSON() {
             try {
                 showLoading();
@@ -2011,16 +1968,12 @@
                 }
                 
                 const data = await response.json();
-                console.log('Получены данные:', data);
                 
-                // Проверяем, что это массив
                 if (!Array.isArray(data)) {
                     throw new Error('Данные аккаунтов должны быть массивом');
                 }
                 
-                // Обрабатываем каждый аккаунт
                 accounts = data.map(account => {
-                    // Приводим поля к нужным типам
                     const processedAccount = {
                         id: String(account.id || Math.random().toString(36).substr(2, 9)),
                         name: String(account.name || 'Неизвестный'),
@@ -2035,7 +1988,6 @@
                         updated_at: account.updated_at || new Date().toISOString()
                     };
                     
-                    // Проверяем статус
                     if (!['available', 'sold'].includes(processedAccount.status)) {
                         processedAccount.status = 'available';
                     }
@@ -2044,7 +1996,6 @@
                 });
                 
                 console.log('Обработано аккаунтов:', accounts.length);
-                console.log('Пример аккаунта:', accounts[0]);
                 
                 updateAccountsDisplay();
                 updateCategoryCounts();
@@ -2058,7 +2009,6 @@
                 console.error('Error loading accounts:', error);
                 showNotification('Не удалось загрузить аккаунты из файла', 'error');
                 
-                // Используем демо-данные только для отладки
                 accounts = [
                     {
                         "id": "demo_1",
@@ -2080,31 +2030,37 @@
             }
         }
 
-        // Загрузка заявок на оплату
         function loadPaymentRequests(filter = 'pending') {
-            // Обновляем текущий фильтр
             currentPaymentFilter = filter;
             
-            // Загружаем заявки из localStorage
-            paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
-            console.log('Загружено заявок:', paymentRequests.length);
-            
-            // Если админ, обновляем таблицу
-            if (isAdmin) {
-                updatePaymentRequestsTable(filter);
+            try {
+                const stored = localStorage.getItem('yasplit_payment_requests');
+                paymentRequests = stored ? JSON.parse(stored) : [];
+                console.log('Загружено заявок из localStorage:', paymentRequests.length);
+            } catch (e) {
+                console.error('Ошибка загрузки заявок:', e);
+                paymentRequests = [];
             }
             
-            // Обновляем счетчики
+            if (isAdmin) {
+                updatePaymentRequestsTable(filter);
+                updateAdminStats();
+            }
+            
             updateCategoryCounts();
             updateStats();
         }
 
-        // Обновление таблицы заявок в админ-панели
         function updatePaymentRequestsTable(filter = 'pending') {
             const container = document.getElementById('paymentRequestsTable');
-            if (!container || !isAdmin) return;
+            if (!container || !isAdmin) {
+                console.log('Контейнер или админ не найден');
+                return;
+            }
             
-            // Фильтрация заявок
+            console.log('Обновление таблицы с фильтром:', filter);
+            console.log('Всего заявок:', paymentRequests.length);
+            
             let filteredRequests = paymentRequests;
             if (filter === 'pending') {
                 filteredRequests = paymentRequests.filter(req => req.status === 'pending');
@@ -2114,7 +2070,6 @@
                 filteredRequests = paymentRequests.filter(req => req.status === 'cancelled');
             }
             
-            // Сортировка по дате (новые сверху)
             filteredRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             
             if (filteredRequests.length === 0) {
@@ -2189,7 +2144,60 @@
             container.innerHTML = html;
         }
 
-        // Обновление отображения аккаунтов
+        function updateAdminStats() {
+            if (!isAdmin) return;
+            
+            const pendingCount = paymentRequests.filter(req => req.status === 'pending').length;
+            const confirmedCount = paymentRequests.filter(req => req.status === 'confirmed').length;
+            const cancelledCount = paymentRequests.filter(req => req.status === 'cancelled').length;
+            const totalAmount = paymentRequests
+                .filter(req => req.status === 'confirmed')
+                .reduce((sum, req) => sum + req.amount, 0);
+            
+            console.log('Статистика админа:', { pendingCount, confirmedCount, cancelledCount, totalAmount });
+            
+            const adminBadge = document.getElementById('adminBadge');
+            const pendingCountEl = document.getElementById('pendingCount');
+            
+            if (adminBadge) {
+                adminBadge.textContent = pendingCount;
+                adminBadge.style.display = pendingCount > 0 ? 'block' : 'none';
+            }
+            
+            if (pendingCountEl) {
+                pendingCountEl.textContent = pendingCount;
+            }
+            
+            const adminInfo = document.getElementById('adminAccountsInfo');
+            if (adminInfo) {
+                const statsHtml = `
+                    <div style="margin-top: 20px; background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
+                        <h4 style="margin-bottom: 15px; color: var(--light);">Статистика заявок</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px; font-weight: 800; color: var(--warning);">${pendingCount}</div>
+                                <div style="color: var(--light-gray); font-size: 12px;">Ожидают</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px; font-weight: 800; color: var(--success);">${confirmedCount}</div>
+                                <div style="color: var(--light-gray); font-size: 12px;">Подтверждены</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px; font-weight: 800; color: var(--danger);">${cancelledCount}</div>
+                                <div style="color: var(--light-gray); font-size: 12px;">Отменены</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px; font-weight: 800; color: var(--primary-light);">${formatCurrency(totalAmount)} ₽</div>
+                                <div style="color: var(--light-gray); font-size: 12px;">Сумма</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                adminInfo.innerHTML = statsHtml;
+            }
+        }
+
         function updateAccountsDisplay() {
             const accountsPage = document.getElementById('accounts');
             const categoryPage = document.getElementById('category');
@@ -2203,7 +2211,6 @@
             updateQuickStats();
         }
 
-        // Обновление быстрой статистики
         function updateQuickStats() {
             const totalAccounts = accounts.length;
             const availableCount = accounts.filter(acc => acc.status === 'available').length;
@@ -2218,7 +2225,6 @@
             if (totalValueEl) totalValueEl.textContent = formatCurrency(totalValue) + ' ₽';
         }
 
-        // Обновление счетчиков категорий
         function updateCategoryCounts() {
             const totalAccounts = accounts.length;
             const availableCount = accounts.filter(acc => acc.status === 'available').length;
@@ -2227,7 +2233,6 @@
             const lowPriceCount = accounts.filter(acc => acc.price < 1000).length;
             const pendingPayments = paymentRequests.filter(req => req.status === 'pending').length;
             
-            // Обновляем бейджи в навигации
             const accountsBadge = document.getElementById('accountsBadge');
             const availableBadge = document.getElementById('availableBadge');
             const soldBadge = document.getElementById('soldBadge');
@@ -2271,9 +2276,7 @@
             }
         }
 
-        // Настройка обработчиков событий
         function setupEventListeners() {
-            // Ввод Telegram username
             const telegramInput = document.getElementById('telegramUsername');
             if (telegramInput) {
                 telegramInput.addEventListener('keypress', function(e) {
@@ -2285,7 +2288,6 @@
                 telegramInput.focus();
             }
 
-            // Overlay для закрытия модальных окон
             const overlay = document.getElementById('overlay');
             if (overlay) {
                 overlay.addEventListener('click', function() {
@@ -2293,19 +2295,16 @@
                 });
             }
 
-            // Закрытие модального окна при нажатии ESC
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     hidePaymentModal();
                 }
             });
 
-            // Адаптивный дизайн
             window.addEventListener('resize', handleResize);
             handleResize();
         }
 
-        // Обработка изменения размера окна
         function handleResize() {
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menuToggle');
@@ -2324,7 +2323,6 @@
             }
         }
 
-        // Авторизация через Telegram
         async function telegramLogin() {
             const telegramInput = document.getElementById('telegramUsername');
             const telegramUsername = telegramInput.value.trim();
@@ -2350,16 +2348,14 @@
             showLoading();
             
             try {
-                // Проверяем, является ли это администратором
                 const adminCheck = telegramUsername === '@admin';
                 
-                // Создание пользователя с балансом 0
                 const userId = generateId();
                 currentUser = {
                     id: userId,
                     telegramUsername: telegramUsername,
                     name: telegramUsername.replace('@', ''),
-                    balance: 0, // БАЛАНС 0
+                    balance: 0,
                     purchasedAccounts: [],
                     totalSpent: 0,
                     transactions: [],
@@ -2367,32 +2363,26 @@
                     isAdmin: adminCheck
                 };
                 
-                // Сохранение пользователя
                 localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
                 
-                // Если это админ, показываем админ-панель
                 if (adminCheck) {
                     isAdmin = true;
                     const adminNavItem = document.getElementById('adminNavItem');
                     if (adminNavItem) adminNavItem.style.display = 'flex';
+                    await initializePaymentRequests();
                 }
                 
-                // Загружаем аккаунты
                 await loadAccountsFromJSON();
                 
-                // Загружаем заявки
                 loadPaymentRequests();
                 
-                // Показать приложение
                 showApp();
                 updateStats();
                 loadRecentPurchases();
                 updateCategoryCounts();
                 
-                // Запускаем авто-обновление
                 startAutoRefresh();
                 
-                // Отправляем уведомление в Telegram
                 await sendTelegramNotification(`👤 Пользователь ${telegramUsername} вошел в систему`);
                 
                 showNotification(
@@ -2407,7 +2397,6 @@
             }
         }
 
-        // Отправка уведомления в Telegram
         async function sendTelegramNotification(message) {
             if (!CONFIG.TELEGRAM_BOT_TOKEN || CONFIG.TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') {
                 return;
@@ -2436,7 +2425,6 @@
             }
         }
 
-        // Выход из системы
         function logout() {
             showNotification('Вы вышли из системы', 'info');
             
@@ -2448,7 +2436,6 @@
             showAuth();
         }
 
-        // Показать приложение
         function showApp() {
             const authScreen = document.getElementById('authScreen');
             const app = document.getElementById('app');
@@ -2460,7 +2447,6 @@
             navigateTo('dashboard');
         }
 
-        // Показать экран авторизации
         function showAuth() {
             const authScreen = document.getElementById('authScreen');
             const app = document.getElementById('app');
@@ -2474,7 +2460,6 @@
             }
         }
 
-        // Обновление информации пользователя
         function updateUserInfo() {
             if (!currentUser) return;
             
@@ -2489,15 +2474,12 @@
             if (currentBalanceEl) currentBalanceEl.textContent = `${formatCurrency(currentUser.balance)} ₽`;
         }
 
-        // Навигация по страницам
         function navigateTo(page, category = null) {
-            // Скрыть все страницы
             document.querySelectorAll('.content-page').forEach(el => {
                 el.style.display = 'none';
                 el.classList.remove('active');
             });
             
-            // Показать выбранную страницу
             if (page === 'category' && category) {
                 currentCategory = category;
                 showCategoryPage(category);
@@ -2509,12 +2491,10 @@
                 }
             }
             
-            // Обновить активный элемент в навигации
             document.querySelectorAll('.nav-item').forEach(el => {
                 el.classList.remove('active');
             });
             
-            // Найти соответствующий элемент навигации
             let navItem;
             if (page === 'category' && category) {
                 navItem = document.querySelector(`.nav-item[onclick*="${category}"]`);
@@ -2526,7 +2506,6 @@
                 navItem.classList.add('active');
             }
             
-            // Обновить заголовок
             const pageTitles = {
                 dashboard: { title: 'Главная панель', subtitle: 'Обзор системы и статистика' },
                 accounts: { title: 'Все аккаунты', subtitle: 'Полный список всех аккаунтов в системе' },
@@ -2542,7 +2521,6 @@
                 pageSubtitleEl.textContent = pageTitles[page].subtitle;
             }
             
-            // Загрузить данные для страницы
             if (page === 'admin') {
                 loadPaymentRequests('pending');
             } else if (page === 'payment') {
@@ -2553,14 +2531,12 @@
                 renderCategoryAccounts(category);
             }
             
-            // Закрыть боковую панель на мобильных
             if (window.innerWidth <= 768) {
                 const sidebar = document.getElementById('sidebar');
                 if (sidebar) sidebar.classList.remove('active');
             }
         }
 
-        // Показать страницу категории
         function showCategoryPage(category) {
             const container = document.getElementById('category');
             if (!container) return;
@@ -2588,7 +2564,6 @@
             }
         }
 
-        // Рендеринг аккаунтов
         function renderAccounts(filter = 'all') {
             const container = document.getElementById('accountsGrid');
             if (!container) return;
@@ -2611,14 +2586,12 @@
             container.innerHTML = filteredAccounts.map(account => createAccountCard(account)).join('');
         }
 
-        // Рендеринг аккаунтов категории
         function renderCategoryAccounts(category) {
             const container = document.getElementById('categoryGrid');
             if (!container) return;
             
             let filteredAccounts = getFilteredAccounts(category);
             
-            // Обновляем статистику категории
             const count = filteredAccounts.length;
             const totalValue = filteredAccounts.reduce((sum, acc) => sum + (acc.price || 0), 0);
             const categoryStatsEl = document.getElementById('categoryStats');
@@ -2643,7 +2616,6 @@
             container.innerHTML = filteredAccounts.map(account => createAccountCard(account)).join('');
         }
 
-        // Получение отфильтрованных аккаунтов
         function getFilteredAccounts(category) {
             switch(category) {
                 case 'available':
@@ -2659,7 +2631,6 @@
             }
         }
 
-        // Создание карточки аккаунта
         function createAccountCard(account) {
             const isAvailable = account.status === 'available';
             const initials = account.name.split(' ').map(n => n[0]).join('').toUpperCase();
@@ -2727,7 +2698,6 @@
             `;
         }
 
-        // Покупка аккаунта
         async function buyAccount(accountId) {
             if (!currentUser) {
                 showNotification('Сначала войдите в систему', 'error');
@@ -2749,7 +2719,6 @@
             showLoading();
             
             try {
-                // Обновление баланса
                 currentUser.balance -= account.price;
                 currentUser.totalSpent += account.price;
                 if (!currentUser.purchasedAccounts) {
@@ -2757,7 +2726,6 @@
                 }
                 currentUser.purchasedAccounts.push(accountId);
                 
-                // Добавление транзакции
                 const transaction = {
                     id: generateId(),
                     type: 'purchase',
@@ -2772,20 +2740,16 @@
                 }
                 currentUser.transactions.push(transaction);
                 
-                // Обновление статуса аккаунта
                 const accountIndex = accounts.findIndex(acc => acc.id === accountId);
                 if (accountIndex !== -1) {
                     accounts[accountIndex].status = 'sold';
                     accounts[accountIndex].updated_at = new Date().toISOString();
                     
-                    // Сохраняем обновленные аккаунты в localStorage
                     localStorage.setItem('yasplit_accounts', JSON.stringify(accounts));
                 }
                 
-                // Сохранение пользователя
                 localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
                 
-                // Отправка уведомления в Telegram
                 await sendTelegramNotification(
                     `🛒 ПОКУПКА АККАУНТА\n` +
                     `Пользователь: ${currentUser.telegramUsername}\n` +
@@ -2795,7 +2759,6 @@
                     `Время: ${new Date().toLocaleString('ru-RU')}`
                 );
                 
-                // Обновление UI
                 updateUserInfo();
                 updateStats();
                 updateAccountsDisplay();
@@ -2811,7 +2774,6 @@
             }
         }
 
-        // Обновление статистики
         function updateStats() {
             if (!currentUser) return;
             
@@ -2824,12 +2786,10 @@
             if (purchasedAccountsEl) purchasedAccountsEl.textContent = currentUser.purchasedAccounts?.length || 0;
             if (totalSpentEl) totalSpentEl.textContent = `${formatCurrency(currentUser.totalSpent || 0)} ₽`;
             
-            // Подсчет ожидающих платежей
             const pendingCount = paymentRequests.filter(req => req.status === 'pending').length;
             if (pendingPaymentsEl) pendingPaymentsEl.textContent = pendingCount;
         }
 
-        // Загрузка последних покупок
         function loadRecentPurchases() {
             if (!currentUser || !currentUser.transactions) return;
             
@@ -2893,7 +2853,6 @@
             container.innerHTML = html;
         }
 
-        // Показать модальное окно оплаты
         function showPaymentModal() {
             const modal = document.getElementById('paymentModal');
             const overlay = document.getElementById('overlay');
@@ -2905,7 +2864,6 @@
             document.body.style.overflow = 'hidden';
         }
 
-        // Скрыть модальное окно оплаты
         function hidePaymentModal() {
             const modal = document.getElementById('paymentModal');
             const overlay = document.getElementById('overlay');
@@ -2916,7 +2874,6 @@
             document.body.style.overflow = '';
         }
 
-        // Выбор метода оплаты
         function selectPaymentMethod(method) {
             document.querySelectorAll('.payment-method').forEach(el => {
                 el.classList.remove('active');
@@ -2934,13 +2891,11 @@
             if (cryptoForm) cryptoForm.style.display = method === 'crypto' ? 'block' : 'none';
         }
 
-        // Установка суммы оплаты
         function setPaymentAmount(amount) {
             const amountInput = document.getElementById('paymentAmount');
             if (amountInput) amountInput.value = amount;
         }
 
-        // Создание заявки на оплату
         async function createPaymentRequest() {
             if (!currentUser) {
                 showNotification('Сначала войдите в систему', 'error');
@@ -2976,7 +2931,6 @@
             showLoading();
             
             try {
-                // Создание заявки
                 const paymentRequest = {
                     id: generateId(),
                     userId: currentUser.id,
@@ -2989,44 +2943,37 @@
                     adminNote: ''
                 };
                 
-                // Сохранение заявки
-                let paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
-                paymentRequests.push(paymentRequest);
-                localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
+                console.log('Создана заявка:', paymentRequest);
                 
-                // Обновляем локальную переменную
-                window.paymentRequests = paymentRequests;
+                let existingRequests = [];
+                try {
+                    const stored = localStorage.getItem('yasplit_payment_requests');
+                    if (stored) {
+                        existingRequests = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    console.error('Ошибка загрузки заявок:', e);
+                    existingRequests = [];
+                }
                 
-                console.log('Заявка создана:', paymentRequest);
-                console.log('Всего заявок:', paymentRequests.length);
+                existingRequests.push(paymentRequest);
                 
-                // Отправка уведомления в Telegram
+                localStorage.setItem('yasplit_payment_requests', JSON.stringify(existingRequests));
+                
+                console.log('Заявка сохранена в localStorage. Всего заявок:', existingRequests.length);
+                
                 await sendTelegramNotification(
-                    `💰 ЗАЯВКА НА ПОПОЛНЕНИЕ\n` +
-                    `Пользователь: ${currentUser.telegramUsername}\n` +
-                    `Сумма: ${formatCurrency(amount)} ₽\n` +
-                    `Способ: ${methodNames[method]}\n` +
-                    `Время: ${new Date().toLocaleString('ru-RU')}`
+                    `💰 НОВАЯ ЗАЯВКА НА ПОПОЛНЕНИЕ\n` +
+                    `👤 Пользователь: ${currentUser.telegramUsername}\n` +
+                    `💵 Сумма: ${formatCurrency(amount)} ₽\n` +
+                    `📋 Способ: ${methodNames[method]}\n` +
+                    `🕐 Время: ${new Date().toLocaleString('ru-RU')}\n` +
+                    `🆔 ID: ${paymentRequest.id.slice(0, 8)}`
                 );
                 
-                // Закрытие модального окна
                 hidePaymentModal();
                 
-                // Обновление статистики
-                updateStats();
-                updateCategoryCounts();
-                
-                // Если пользователь на странице платежей, обновить историю
-                const paymentPage = document.getElementById('payment');
-                if (paymentPage && paymentPage.classList.contains('active')) {
-                    loadUserPaymentHistory();
-                }
-                
-                // Если админ в админке, обновить таблицу
-                const adminPage = document.getElementById('admin');
-                if (isAdmin && adminPage && adminPage.classList.contains('active')) {
-                    loadPaymentRequests(currentPaymentFilter);
-                }
+                refreshData();
                 
                 showNotification(`Заявка на пополнение ${formatCurrency(amount)} ₽ создана! Ожидайте подтверждения.`, 'success');
             } catch (error) {
@@ -3037,7 +2984,6 @@
             }
         }
 
-        // Подтверждение платежа (админ)
         async function confirmPayment(requestId) {
             if (!isAdmin) {
                 showNotification('Только администратор может подтверждать платежи', 'error');
@@ -3057,21 +3003,19 @@
                 
                 const request = paymentRequests[requestIndex];
                 
-                // Обновление статуса заявки
                 paymentRequests[requestIndex].status = 'confirmed';
                 paymentRequests[requestIndex].confirmedAt = new Date().toISOString();
                 paymentRequests[requestIndex].confirmedBy = currentUser.telegramUsername;
                 
-                // Сохранение обновленных заявок
                 localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
                 
-                // Обновление баланса пользователя
+                console.log('Заявка подтверждена:', paymentRequests[requestIndex]);
+                
                 let usersData = JSON.parse(localStorage.getItem('yasplit_users')) || {};
                 let user = usersData[request.userId];
                 
                 if (user) {
                     user.balance += request.amount;
-                    
                     if (!user.transactions) user.transactions = [];
                     user.transactions.push({
                         id: generateId(),
@@ -3081,57 +3025,51 @@
                         timestamp: new Date().toISOString(),
                         status: 'confirmed'
                     });
-                    
                     usersData[request.userId] = user;
                     localStorage.setItem('yasplit_users', JSON.stringify(usersData));
-                    
-                    // Если текущий пользователь - это тот, чей баланс пополняем, обновляем его данные
-                    if (currentUser && currentUser.id === request.userId) {
-                        currentUser.balance = user.balance;
-                        if (!currentUser.transactions) currentUser.transactions = [];
-                        currentUser.transactions.push({
-                            id: generateId(),
-                            type: 'deposit',
-                            amount: request.amount,
-                            description: `Пополнение баланса (${request.methodName})`,
-                            timestamp: new Date().toISOString(),
-                            status: 'confirmed'
-                        });
-                        localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
-                        updateUserInfo();
-                        updateStats();
-                    }
                 } else {
-                    // Если пользователь не найден в общем списке, проверяем текущего пользователя
-                    if (currentUser && currentUser.id === request.userId) {
-                        currentUser.balance += request.amount;
-                        if (!currentUser.transactions) currentUser.transactions = [];
-                        currentUser.transactions.push({
+                    user = {
+                        id: request.userId,
+                        telegramUsername: request.telegramUsername,
+                        balance: request.amount,
+                        transactions: [{
                             id: generateId(),
                             type: 'deposit',
                             amount: request.amount,
                             description: `Пополнение баланса (${request.methodName})`,
                             timestamp: new Date().toISOString(),
                             status: 'confirmed'
-                        });
-                        localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
-                        updateUserInfo();
-                        updateStats();
-                    }
+                        }]
+                    };
+                    usersData[request.userId] = user;
+                    localStorage.setItem('yasplit_users', JSON.stringify(usersData));
                 }
                 
-                // Отправка уведомления в Telegram
-                await sendTelegramNotification(
-                    `✅ ПЛАТЕЖ ПОДТВЕРЖДЕН\n` +
-                    `Пользователь: ${request.telegramUsername}\n` +
-                    `Сумма: ${formatCurrency(request.amount)} ₽\n` +
-                    `Подтвердил: ${currentUser.telegramUsername}\n` +
-                    `Время: ${new Date().toLocaleString('ru-RU')}`
-                );
+                if (currentUser && currentUser.id === request.userId) {
+                    currentUser.balance = user.balance;
+                    if (!currentUser.transactions) currentUser.transactions = [];
+                    currentUser.transactions.push({
+                        id: generateId(),
+                        type: 'deposit',
+                        amount: request.amount,
+                        description: `Пополнение баланса (${request.methodName})`,
+                        timestamp: new Date().toISOString(),
+                        status: 'confirmed'
+                    });
+                    localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
+                    updateUserInfo();
+                    updateStats();
+                }
                 
-                // Обновление таблицы заявок
                 loadPaymentRequests(currentPaymentFilter);
                 updateCategoryCounts();
+                
+                await sendTelegramNotification(
+                    `✅ ПЛАТЕЖ ПОДТВЕРЖДЕН\n` +
+                    `👤 Пользователь: ${request.telegramUsername}\n` +
+                    `💵 Сумма: ${formatCurrency(request.amount)} ₽\n` +
+                    `🕐 Время: ${new Date().toLocaleString('ru-RU')}`
+                );
                 
                 showNotification(`Платеж пользователя ${request.telegramUsername} подтвержден!`, 'success');
             } catch (error) {
@@ -3142,7 +3080,6 @@
             }
         }
 
-        // Отмена платежа (админ)
         async function cancelPayment(requestId) {
             if (!isAdmin) {
                 showNotification('Только администратор может отменять платежи', 'error');
@@ -3190,7 +3127,6 @@
             }
         }
 
-        // Загрузка истории платежей пользователя
         function loadUserPaymentHistory() {
             if (!currentUser) return;
             
@@ -3250,7 +3186,6 @@
             container.innerHTML = html;
         }
 
-        // Обновление информации об аккаунтах (для админа)
         function updateAccountsInfo() {
             if (!isAdmin) return;
             
@@ -3283,7 +3218,6 @@
             `;
         }
 
-        // Обновление данных аккаунтов
         async function refreshAccountsData() {
             showLoading();
             try {
@@ -3300,7 +3234,6 @@
             }
         }
 
-        // Экспорт данных аккаунтов
         function exportAccounts() {
             if (!isAdmin) {
                 showNotification('Только администратор может экспортировать данные', 'error');
@@ -3321,7 +3254,6 @@
             showNotification('Данные экспортированы', 'success');
         }
 
-        // Обновление всех данных
         async function refreshData() {
             showLoading();
             try {
@@ -3346,7 +3278,6 @@
             }
         }
 
-        // Копирование в буфер обмена
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showNotification('Адрес скопирован в буфер обмена', 'success');
@@ -3355,23 +3286,19 @@
             });
         }
 
-        // Форматирование валюты
         function formatCurrency(amount) {
             return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
         }
 
-        // Генерация ID
         function generateId() {
             return 'id_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
         }
 
-        // Переключение бокового меню
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             if (sidebar) sidebar.classList.toggle('active');
         }
 
-        // Авто-обновление данных
         function startAutoRefresh() {
             if (autoRefreshInterval) {
                 clearInterval(autoRefreshInterval);
@@ -3381,12 +3308,14 @@
                 if (document.body.contains(document.getElementById('app'))) {
                     await loadAccountsFromJSON();
                     loadPaymentRequests(currentPaymentFilter);
-                    updateCategoryCounts();
+                    
+                    if (isAdmin) {
+                        updateAdminStats();
+                    }
                 }
-            }, CONFIG.AUTO_REFRESH_INTERVAL);
+            }, 10000);
         }
 
-        // Остановка авто-обновления
         function stopAutoRefresh() {
             if (autoRefreshInterval) {
                 clearInterval(autoRefreshInterval);
@@ -3394,7 +3323,22 @@
             }
         }
 
-        // Глобальные функции
+        function debugPaymentRequests() {
+            const debugInfo = document.getElementById('debugInfo');
+            const requests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
+            
+            debugInfo.innerHTML = `
+                <div><strong>Всего заявок:</strong> ${requests.length}</div>
+                <div><strong>Ожидающие:</strong> ${requests.filter(r => r.status === 'pending').length}</div>
+                <div><strong>Подтвержденные:</strong> ${requests.filter(r => r.status === 'confirmed').length}</div>
+                <div><strong>Отмененные:</strong> ${requests.filter(r => r.status === 'cancelled').length}</div>
+                <div style="margin-top: 10px;"><strong>Данные localStorage:</strong></div>
+                <pre style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; max-height: 200px; overflow-y: auto;">
+${JSON.stringify(requests, null, 2)}
+                </pre>
+            `;
+        }
+
         window.refreshData = refreshData;
         window.navigateTo = navigateTo;
         window.toggleSidebar = toggleSidebar;
@@ -3411,6 +3355,7 @@
         window.exportAccounts = exportAccounts;
         window.logout = logout;
         window.telegramLogin = telegramLogin;
+        window.debugPaymentRequests = debugPaymentRequests;
     </script>
 </body>
 </html>
