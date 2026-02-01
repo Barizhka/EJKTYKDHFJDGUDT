@@ -1764,11 +1764,13 @@
         let gridOffsetX = 0;
         let gridOffsetY = 0;
         let currentPaymentFilter = 'pending';
+        let broadcastChannel = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             initGridAnimation();
             initNotifications();
             setupEventListeners();
+            initBroadcastChannel();
             
             if (window.location.hostname.includes('github.io')) {
                 const repoName = window.location.pathname.split('/')[1];
@@ -1778,15 +1780,49 @@
             checkAuth();
             
             window.addEventListener('storage', function(event) {
+                console.log('Storage event:', event.key);
                 if (event.key === 'yasplit_payment_requests' && isAdmin) {
                     const adminPage = document.getElementById('admin');
                     if (adminPage && adminPage.classList.contains('active')) {
                         loadPaymentRequests(currentPaymentFilter);
                         updateCategoryCounts();
+                        showNotification('Новые заявки получены', 'info');
                     }
                 }
             });
+            
+            window.addEventListener('beforeunload', function() {
+                if (broadcastChannel) {
+                    broadcastChannel.close();
+                }
+            });
         });
+
+        function initBroadcastChannel() {
+            try {
+                broadcastChannel = new BroadcastChannel('yasplit_payments');
+                broadcastChannel.onmessage = (event) => {
+                    console.log('BroadcastChannel message received:', event.data);
+                    if (event.data && event.data.type === 'payment_requests_updated') {
+                        console.log('Обновление заявок через BroadcastChannel');
+                        loadPaymentRequests(currentPaymentFilter);
+                        if (isAdmin) {
+                            showNotification('Получены новые заявки на пополнение', 'info');
+                        }
+                    }
+                };
+                console.log('BroadcastChannel инициализирован');
+            } catch (error) {
+                console.error('BroadcastChannel не поддерживается:', error);
+            }
+        }
+
+        function sendBroadcastUpdate() {
+            if (broadcastChannel) {
+                broadcastChannel.postMessage({ type: 'payment_requests_updated' });
+                console.log('Broadcast сообщение отправлено');
+            }
+        }
 
         function initGridAnimation() {
             const canvas = document.getElementById('gridCanvas');
@@ -2043,8 +2079,11 @@
             }
             
             if (isAdmin) {
-                updatePaymentRequestsTable(filter);
-                updateAdminStats();
+                const adminPage = document.getElementById('admin');
+                if (adminPage && adminPage.classList.contains('active')) {
+                    updatePaymentRequestsTable(filter);
+                    updateAdminStats();
+                }
             }
             
             updateCategoryCounts();
@@ -2523,6 +2562,7 @@
             
             if (page === 'admin') {
                 loadPaymentRequests('pending');
+                updateAdminStats();
             } else if (page === 'payment') {
                 loadUserPaymentHistory();
             } else if (page === 'accounts') {
@@ -2962,6 +3002,8 @@
                 
                 console.log('Заявка сохранена в localStorage. Всего заявок:', existingRequests.length);
                 
+                sendBroadcastUpdate();
+                
                 await sendTelegramNotification(
                     `💰 НОВАЯ ЗАЯВКА НА ПОПОЛНЕНИЕ\n` +
                     `👤 Пользователь: ${currentUser.telegramUsername}\n` +
@@ -3061,6 +3103,8 @@
                     updateStats();
                 }
                 
+                sendBroadcastUpdate();
+                
                 loadPaymentRequests(currentPaymentFilter);
                 updateCategoryCounts();
                 
@@ -3106,6 +3150,8 @@
                 paymentRequests[requestIndex].cancellationReason = reason;
                 
                 localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
+                
+                sendBroadcastUpdate();
                 
                 await sendTelegramNotification(
                     `❌ ПЛАТЕЖ ОТМЕНЕН\n` +
@@ -3310,10 +3356,13 @@
                     loadPaymentRequests(currentPaymentFilter);
                     
                     if (isAdmin) {
-                        updateAdminStats();
+                        const adminPage = document.getElementById('admin');
+                        if (adminPage && adminPage.classList.contains('active')) {
+                            updateAdminStats();
+                        }
                     }
                 }
-            }, 10000);
+            }, 5000);
         }
 
         function stopAutoRefresh() {
