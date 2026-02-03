@@ -353,9 +353,10 @@
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            z-index: 100;
+            z-index: 1002;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: var(--shadow-xl);
+            transform: translateX(0);
         }
 
         .sidebar::-webkit-scrollbar {
@@ -415,6 +416,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            min-height: 56px;
         }
 
         .nav-item:hover {
@@ -542,6 +544,8 @@
             font-size: 20px;
             transition: all 0.3s ease;
             flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
         }
 
         .menu-toggle:hover {
@@ -1157,9 +1161,11 @@
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 300px;
+                width: 85%;
+                max-width: 300px;
                 z-index: 1002;
                 box-shadow: var(--shadow-xl);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
             .sidebar.active {
@@ -1169,6 +1175,8 @@
             .main-content {
                 margin-left: 0;
                 padding: 15px;
+                width: 100%;
+                transition: transform 0.3s ease;
             }
             
             .accounts-grid {
@@ -1182,8 +1190,6 @@
             
             .menu-toggle {
                 display: flex;
-                align-items: center;
-                justify-content: center;
             }
             
             .header {
@@ -1207,6 +1213,7 @@
                 overflow-x: auto;
                 padding-bottom: 10px;
                 margin-bottom: 20px;
+                -webkit-overflow-scrolling: touch;
             }
             
             .tab-btn {
@@ -1216,6 +1223,47 @@
             .notification-container {
                 width: calc(100% - 40px);
                 max-width: none;
+            }
+            
+            .user-profile {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 85%;
+                max-width: 300px;
+                background: var(--card-bg);
+                border-top: 1px solid var(--card-border);
+                z-index: 1003;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .sidebar.active .user-profile {
+                transform: translateX(0);
+            }
+            
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+                z-index: 1001;
+                display: none;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+                opacity: 1;
+            }
+            
+            .main-content.shifted {
+                transform: translateX(85%);
+                max-width: 300px;
             }
         }
 
@@ -1256,6 +1304,14 @@
             .data-table {
                 display: block;
                 overflow-x: auto;
+            }
+            
+            .sidebar {
+                width: 90%;
+            }
+            
+            .sidebar-overlay {
+                background: rgba(0, 0, 0, 0.8);
             }
         }
 
@@ -1324,6 +1380,107 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
+        }
+
+        /* Админ-панель улучшения */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--card-border);
+            text-align: center;
+        }
+
+        .admin-stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .admin-stat-label {
+            color: var(--light-gray);
+            font-size: 12px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .user-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .user-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .user-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-list-info {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 10px;
+        }
+
+        .user-list-username {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-list-balance {
+            color: var(--light-gray);
+            font-size: 12px;
+        }
+
+        .balance-input {
+            width: 100px;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius-xs);
+            color: var(--light);
+            margin-right: 10px;
+        }
+
+        .balance-form {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .mobile-menu-header {
+            display: none;
+            padding: 20px;
+            border-bottom: 1px solid var(--card-border);
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -1419,6 +1576,7 @@
     </div>
     
     <div class="overlay" id="overlay"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div id="authScreen" class="auth-screen">
         <div class="auth-container">
@@ -1454,9 +1612,14 @@
 
     <div id="app" class="app-container">
         <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <div class="logo-icon">Y</div>
-                <div class="logo-text">YASPLIT.AI</div>
+            <div class="mobile-menu-header">
+                <div class="logo">
+                    <div class="logo-icon">Y</div>
+                    <div class="logo-text">YASPLIT.AI</div>
+                </div>
+                <button class="mobile-menu-close" onclick="toggleSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
 
             <div class="nav-item active" onclick="navigateTo('dashboard')">
@@ -1519,7 +1682,7 @@
             </div>
         </div>
 
-        <div class="main-content">
+        <div class="main-content" id="mainContent">
             <div class="header">
                 <div style="display: flex; align-items: center; gap: 15px; min-width: 0;">
                     <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
@@ -1709,29 +1872,47 @@
                     </div>
                 </div>
 
-                <div style="background: var(--card-bg); border-radius: var(--border-radius); padding: 30px; border: 1px solid var(--card-border);">
+                <div style="background: var(--card-bg); border-radius: var(--border-radius); padding: 30px; margin-bottom: 30px; border: 1px solid var(--card-border);">
                     <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600; color: var(--light); display: flex; align-items: center; gap: 10px;">
                         <i class="fas fa-users-cog"></i>
-                        Управление аккаунтами
+                        Управление пользователями
                     </h3>
+                    
+                    <div class="admin-stats-grid">
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-value" id="totalUsersCount">0</div>
+                            <div class="admin-stat-label">Всего пользователей</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-value" id="totalSystemBalance">0 ₽</div>
+                            <div class="admin-stat-label">Общий баланс системы</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-value" id="totalPurchases">0</div>
+                            <div class="admin-stat-label">Всего покупок</div>
+                        </div>
+                    </div>
+
                     <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <button class="btn btn-success" onclick="refreshAccountsData()">
+                        <button class="btn btn-success" onclick="loadAllUsers()">
                             <i class="fas fa-sync-alt"></i>
-                            Обновить данные
+                            Загрузить пользователей
                         </button>
-                        <button class="btn btn-outline" onclick="exportAccounts()">
+                        <button class="btn btn-outline" onclick="exportUsersData()">
                             <i class="fas fa-download"></i>
                             Экспорт данных
                         </button>
                     </div>
-                    <div id="adminAccountsInfo"></div>
+
+                    <div class="user-list" id="usersList">
+                    </div>
                 </div>
 
-                <div style="margin-top: 30px; background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
-                    <h4 style="margin-bottom: 10px; color: var(--light);">Отладка</h4>
-                    <button class="btn btn-outline" onclick="debugPaymentRequests()">
+                <div style="background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; border: 1px solid var(--card-border);">
+                    <h4 style="margin-bottom: 15px; color: var(--light);">Отладка системы</h4>
+                    <button class="btn btn-outline" onclick="debugSystem()">
                         <i class="fas fa-bug"></i>
-                        Показать отладку
+                        Показать отладочную информацию
                     </button>
                     <div id="debugInfo" style="margin-top: 10px; font-size: 12px; color: var(--light-gray);"></div>
                 </div>
@@ -1744,7 +1925,7 @@
             TELEGRAM_BOT_TOKEN: '8011138595:AAEX4wnNTAKhkXmnAePgwS5jQ-8FTeKksb0',
             TELEGRAM_CHAT_ID: '2078392488',
             ACCOUNTS_JSON_URL: 'accounts.json',
-            AUTO_REFRESH_INTERVAL: 300000,
+            AUTO_REFRESH_INTERVAL: 30000,
             NOTIFICATION_TIMEOUT: 5000,
             MIN_PAYMENT_AMOUNT: 500,
             MAX_PAYMENT_AMOUNT: 100000,
@@ -1756,6 +1937,7 @@
         let currentUser = null;
         let accounts = [];
         let paymentRequests = [];
+        let allUsers = {};
         let isAdmin = false;
         let currentCategory = 'all';
         let autoRefreshInterval = null;
@@ -1780,7 +1962,6 @@
             checkAuth();
             
             window.addEventListener('storage', function(event) {
-                console.log('Storage event:', event.key);
                 if (event.key === 'yasplit_payment_requests' && isAdmin) {
                     const adminPage = document.getElementById('admin');
                     if (adminPage && adminPage.classList.contains('active')) {
@@ -1800,27 +1981,28 @@
 
         function initBroadcastChannel() {
             try {
-                broadcastChannel = new BroadcastChannel('yasplit_payments');
+                broadcastChannel = new BroadcastChannel('yasplit_system');
                 broadcastChannel.onmessage = (event) => {
-                    console.log('BroadcastChannel message received:', event.data);
                     if (event.data && event.data.type === 'payment_requests_updated') {
-                        console.log('Обновление заявок через BroadcastChannel');
-                        loadPaymentRequests(currentPaymentFilter);
+                        loadPaymentRequestsFromStorage();
                         if (isAdmin) {
                             showNotification('Получены новые заявки на пополнение', 'info');
                         }
+                    } else if (event.data && event.data.type === 'users_updated') {
+                        loadUsersFromStorage();
+                        if (isAdmin) {
+                            showNotification('Данные пользователей обновлены', 'info');
+                        }
                     }
                 };
-                console.log('BroadcastChannel инициализирован');
             } catch (error) {
                 console.error('BroadcastChannel не поддерживается:', error);
             }
         }
 
-        function sendBroadcastUpdate() {
+        function sendBroadcastUpdate(type) {
             if (broadcastChannel) {
-                broadcastChannel.postMessage({ type: 'payment_requests_updated' });
-                console.log('Broadcast сообщение отправлено');
+                broadcastChannel.postMessage({ type: type });
             }
         }
 
@@ -1873,13 +2055,16 @@
                 mouseY = e.clientY;
             });
             
+            document.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    mouseX = e.touches[0].clientX;
+                    mouseY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+            
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
             drawGrid();
-            
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                canvas.style.display = 'none';
-            }
         }
 
         function initNotifications() {
@@ -1941,19 +2126,73 @@
             if (overlay) overlay.classList.remove('active');
         }
 
+        async function loadUsersFromStorage() {
+            try {
+                const usersData = localStorage.getItem('yasplit_all_users');
+                if (usersData) {
+                    allUsers = JSON.parse(usersData);
+                } else {
+                    allUsers = {};
+                }
+                return true;
+            } catch (error) {
+                console.error('Ошибка загрузки пользователей:', error);
+                allUsers = {};
+                return false;
+            }
+        }
+
+        async function saveUsersToStorage() {
+            try {
+                localStorage.setItem('yasplit_all_users', JSON.stringify(allUsers));
+                return true;
+            } catch (error) {
+                console.error('Ошибка сохранения пользователей:', error);
+                return false;
+            }
+        }
+
+        async function loadPaymentRequestsFromStorage() {
+            try {
+                const requestsData = localStorage.getItem('yasplit_payment_requests');
+                if (requestsData) {
+                    paymentRequests = JSON.parse(requestsData);
+                } else {
+                    paymentRequests = [];
+                }
+                return true;
+            } catch (error) {
+                console.error('Ошибка загрузки заявок:', error);
+                paymentRequests = [];
+                return false;
+            }
+        }
+
+        async function savePaymentRequestsToStorage() {
+            try {
+                localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
+                return true;
+            } catch (error) {
+                console.error('Ошибка сохранения заявок:', error);
+                return false;
+            }
+        }
+
         async function checkAuth() {
             showLoading();
             try {
+                await loadUsersFromStorage();
+                await loadPaymentRequestsFromStorage();
+                
                 const userData = localStorage.getItem('yasplit_user');
                 if (userData) {
                     currentUser = JSON.parse(userData);
                     
-                    isAdmin = currentUser.telegramUsername === '@admin' || currentUser.isAdmin === true;
+                    isAdmin = currentUser.telegramUsername === '@admin';
                     
                     if (isAdmin) {
                         const adminNavItem = document.getElementById('adminNavItem');
                         if (adminNavItem) adminNavItem.style.display = 'flex';
-                        await initializePaymentRequests();
                     }
                     
                     await loadAccountsFromJSON();
@@ -1975,28 +2214,9 @@
             }
         }
 
-        async function initializePaymentRequests() {
-            try {
-                const stored = localStorage.getItem('yasplit_payment_requests');
-                if (!stored) {
-                    localStorage.setItem('yasplit_payment_requests', JSON.stringify([]));
-                    console.log('Инициализирован пустой массив заявок');
-                } else {
-                    console.log('Заявки уже существуют в localStorage');
-                }
-                
-                loadPaymentRequests();
-            } catch (error) {
-                console.error('Ошибка инициализации заявок:', error);
-                localStorage.setItem('yasplit_payment_requests', JSON.stringify([]));
-            }
-        }
-
         async function loadAccountsFromJSON() {
             try {
                 showLoading();
-                console.log('Загрузка аккаунтов из:', CONFIG.ACCOUNTS_JSON_URL);
-                
                 const response = await fetch(CONFIG.ACCOUNTS_JSON_URL + '?t=' + Date.now());
                 
                 if (!response.ok) {
@@ -2030,8 +2250,6 @@
                     
                     return processedAccount;
                 });
-                
-                console.log('Обработано аккаунтов:', accounts.length);
                 
                 updateAccountsDisplay();
                 updateCategoryCounts();
@@ -2069,15 +2287,6 @@
         function loadPaymentRequests(filter = 'pending') {
             currentPaymentFilter = filter;
             
-            try {
-                const stored = localStorage.getItem('yasplit_payment_requests');
-                paymentRequests = stored ? JSON.parse(stored) : [];
-                console.log('Загружено заявок из localStorage:', paymentRequests.length);
-            } catch (e) {
-                console.error('Ошибка загрузки заявок:', e);
-                paymentRequests = [];
-            }
-            
             if (isAdmin) {
                 const adminPage = document.getElementById('admin');
                 if (adminPage && adminPage.classList.contains('active')) {
@@ -2092,13 +2301,7 @@
 
         function updatePaymentRequestsTable(filter = 'pending') {
             const container = document.getElementById('paymentRequestsTable');
-            if (!container || !isAdmin) {
-                console.log('Контейнер или админ не найден');
-                return;
-            }
-            
-            console.log('Обновление таблицы с фильтром:', filter);
-            console.log('Всего заявок:', paymentRequests.length);
+            if (!container || !isAdmin) return;
             
             let filteredRequests = paymentRequests;
             if (filter === 'pending') {
@@ -2161,7 +2364,7 @@
                         </td>
                         <td>
                             ${request.status === 'pending' ? `
-                                <div style="display: flex; gap: 8px;">
+                                <div class="action-buttons">
                                     <button class="btn btn-sm" style="background: rgba(16,185,129,0.2); color: var(--success);" onclick="confirmPayment('${request.id}')">
                                         <i class="fas fa-check"></i>
                                     </button>
@@ -2187,54 +2390,25 @@
             if (!isAdmin) return;
             
             const pendingCount = paymentRequests.filter(req => req.status === 'pending').length;
-            const confirmedCount = paymentRequests.filter(req => req.status === 'confirmed').length;
-            const cancelledCount = paymentRequests.filter(req => req.status === 'cancelled').length;
-            const totalAmount = paymentRequests
-                .filter(req => req.status === 'confirmed')
-                .reduce((sum, req) => sum + req.amount, 0);
-            
-            console.log('Статистика админа:', { pendingCount, confirmedCount, cancelledCount, totalAmount });
+            const totalUsers = Object.keys(allUsers).length;
+            const totalSystemBalance = Object.values(allUsers).reduce((sum, user) => sum + (user.balance || 0), 0);
+            const totalPurchases = Object.values(allUsers).reduce((sum, user) => sum + (user.purchasedAccounts?.length || 0), 0);
             
             const adminBadge = document.getElementById('adminBadge');
             const pendingCountEl = document.getElementById('pendingCount');
+            const totalUsersCountEl = document.getElementById('totalUsersCount');
+            const totalSystemBalanceEl = document.getElementById('totalSystemBalance');
+            const totalPurchasesEl = document.getElementById('totalPurchases');
             
             if (adminBadge) {
                 adminBadge.textContent = pendingCount;
                 adminBadge.style.display = pendingCount > 0 ? 'block' : 'none';
             }
             
-            if (pendingCountEl) {
-                pendingCountEl.textContent = pendingCount;
-            }
-            
-            const adminInfo = document.getElementById('adminAccountsInfo');
-            if (adminInfo) {
-                const statsHtml = `
-                    <div style="margin-top: 20px; background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
-                        <h4 style="margin-bottom: 15px; color: var(--light);">Статистика заявок</h4>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 24px; font-weight: 800; color: var(--warning);">${pendingCount}</div>
-                                <div style="color: var(--light-gray); font-size: 12px;">Ожидают</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 24px; font-weight: 800; color: var(--success);">${confirmedCount}</div>
-                                <div style="color: var(--light-gray); font-size: 12px;">Подтверждены</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 24px; font-weight: 800; color: var(--danger);">${cancelledCount}</div>
-                                <div style="color: var(--light-gray); font-size: 12px;">Отменены</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 24px; font-weight: 800; color: var(--primary-light);">${formatCurrency(totalAmount)} ₽</div>
-                                <div style="color: var(--light-gray); font-size: 12px;">Сумма</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                adminInfo.innerHTML = statsHtml;
-            }
+            if (pendingCountEl) pendingCountEl.textContent = pendingCount;
+            if (totalUsersCountEl) totalUsersCountEl.textContent = totalUsers;
+            if (totalSystemBalanceEl) totalSystemBalanceEl.textContent = formatCurrency(totalSystemBalance) + ' ₽';
+            if (totalPurchasesEl) totalPurchasesEl.textContent = totalPurchases;
         }
 
         function updateAccountsDisplay() {
@@ -2331,12 +2505,25 @@
             if (overlay) {
                 overlay.addEventListener('click', function() {
                     hidePaymentModal();
+                    if (window.innerWidth <= 768) {
+                        toggleSidebar();
+                    }
+                });
+            }
+
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    toggleSidebar();
                 });
             }
 
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     hidePaymentModal();
+                    if (window.innerWidth <= 768) {
+                        toggleSidebar();
+                    }
                 }
             });
 
@@ -2347,18 +2534,30 @@
         function handleResize() {
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menuToggle');
+            const mobileMenuHeader = document.querySelector('.mobile-menu-header');
             
             if (!sidebar || !menuToggle) return;
             
             if (window.innerWidth <= 768) {
                 menuToggle.style.display = 'flex';
+                if (mobileMenuHeader) mobileMenuHeader.style.display = 'flex';
+                
                 if (!sidebar.classList.contains('active')) {
                     sidebar.style.transform = 'translateX(-100%)';
                 }
             } else {
                 menuToggle.style.display = 'none';
+                if (mobileMenuHeader) mobileMenuHeader.style.display = 'none';
+                
                 sidebar.style.transform = 'translateX(0)';
                 sidebar.classList.remove('active');
+                
+                const sidebarOverlay = document.getElementById('sidebarOverlay');
+                if (sidebarOverlay) {
+                    sidebarOverlay.classList.remove('active');
+                }
+                
+                document.body.style.overflow = '';
             }
         }
 
@@ -2388,19 +2587,55 @@
             
             try {
                 const adminCheck = telegramUsername === '@admin';
-                
                 const userId = generateId();
-                currentUser = {
-                    id: userId,
-                    telegramUsername: telegramUsername,
-                    name: telegramUsername.replace('@', ''),
-                    balance: 0,
-                    purchasedAccounts: [],
-                    totalSpent: 0,
-                    transactions: [],
-                    createdAt: new Date().toISOString(),
-                    isAdmin: adminCheck
-                };
+                
+                let existingUser = null;
+                for (const id in allUsers) {
+                    if (allUsers[id].telegramUsername === telegramUsername) {
+                        existingUser = allUsers[id];
+                        break;
+                    }
+                }
+                
+                if (existingUser) {
+                    currentUser = {
+                        id: existingUser.id,
+                        telegramUsername: existingUser.telegramUsername,
+                        name: existingUser.name,
+                        balance: existingUser.balance,
+                        purchasedAccounts: existingUser.purchasedAccounts || [],
+                        totalSpent: existingUser.totalSpent || 0,
+                        transactions: existingUser.transactions || [],
+                        createdAt: existingUser.createdAt,
+                        isAdmin: existingUser.isAdmin || adminCheck
+                    };
+                } else {
+                    currentUser = {
+                        id: userId,
+                        telegramUsername: telegramUsername,
+                        name: telegramUsername.replace('@', ''),
+                        balance: 0,
+                        purchasedAccounts: [],
+                        totalSpent: 0,
+                        transactions: [],
+                        createdAt: new Date().toISOString(),
+                        isAdmin: adminCheck
+                    };
+                    
+                    allUsers[userId] = {
+                        id: userId,
+                        telegramUsername: telegramUsername,
+                        name: telegramUsername.replace('@', ''),
+                        balance: 0,
+                        purchasedAccounts: [],
+                        totalSpent: 0,
+                        transactions: [],
+                        createdAt: new Date().toISOString(),
+                        isAdmin: adminCheck
+                    };
+                    
+                    await saveUsersToStorage();
+                }
                 
                 localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
                 
@@ -2408,7 +2643,6 @@
                     isAdmin = true;
                     const adminNavItem = document.getElementById('adminNavItem');
                     if (adminNavItem) adminNavItem.style.display = 'flex';
-                    await initializePaymentRequests();
                 }
                 
                 await loadAccountsFromJSON();
@@ -2562,7 +2796,7 @@
             
             if (page === 'admin') {
                 loadPaymentRequests('pending');
-                updateAdminStats();
+                loadAllUsers();
             } else if (page === 'payment') {
                 loadUserPaymentHistory();
             } else if (page === 'accounts') {
@@ -2572,8 +2806,7 @@
             }
             
             if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) sidebar.classList.remove('active');
+                toggleSidebar();
             }
         }
 
@@ -2780,15 +3013,28 @@
                 }
                 currentUser.transactions.push(transaction);
                 
+                allUsers[currentUser.id] = {
+                    id: currentUser.id,
+                    telegramUsername: currentUser.telegramUsername,
+                    name: currentUser.name,
+                    balance: currentUser.balance,
+                    purchasedAccounts: currentUser.purchasedAccounts,
+                    totalSpent: currentUser.totalSpent,
+                    transactions: currentUser.transactions,
+                    createdAt: currentUser.createdAt,
+                    isAdmin: currentUser.isAdmin
+                };
+                
+                await saveUsersToStorage();
+                sendBroadcastUpdate('users_updated');
+                
+                localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
+                
                 const accountIndex = accounts.findIndex(acc => acc.id === accountId);
                 if (accountIndex !== -1) {
                     accounts[accountIndex].status = 'sold';
                     accounts[accountIndex].updated_at = new Date().toISOString();
-                    
-                    localStorage.setItem('yasplit_accounts', JSON.stringify(accounts));
                 }
-                
-                localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
                 
                 await sendTelegramNotification(
                     `🛒 ПОКУПКА АККАУНТА\n` +
@@ -2983,26 +3229,10 @@
                     adminNote: ''
                 };
                 
-                console.log('Создана заявка:', paymentRequest);
+                paymentRequests.push(paymentRequest);
+                await savePaymentRequestsToStorage();
                 
-                let existingRequests = [];
-                try {
-                    const stored = localStorage.getItem('yasplit_payment_requests');
-                    if (stored) {
-                        existingRequests = JSON.parse(stored);
-                    }
-                } catch (e) {
-                    console.error('Ошибка загрузки заявок:', e);
-                    existingRequests = [];
-                }
-                
-                existingRequests.push(paymentRequest);
-                
-                localStorage.setItem('yasplit_payment_requests', JSON.stringify(existingRequests));
-                
-                console.log('Заявка сохранена в localStorage. Всего заявок:', existingRequests.length);
-                
-                sendBroadcastUpdate();
+                sendBroadcastUpdate('payment_requests_updated');
                 
                 await sendTelegramNotification(
                     `💰 НОВАЯ ЗАЯВКА НА ПОПОЛНЕНИЕ\n` +
@@ -3035,7 +3265,6 @@
             showLoading();
             
             try {
-                let paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
                 const requestIndex = paymentRequests.findIndex(req => req.id === requestId);
                 
                 if (requestIndex === -1) {
@@ -3049,17 +3278,12 @@
                 paymentRequests[requestIndex].confirmedAt = new Date().toISOString();
                 paymentRequests[requestIndex].confirmedBy = currentUser.telegramUsername;
                 
-                localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
+                await savePaymentRequestsToStorage();
                 
-                console.log('Заявка подтверждена:', paymentRequests[requestIndex]);
-                
-                let usersData = JSON.parse(localStorage.getItem('yasplit_users')) || {};
-                let user = usersData[request.userId];
-                
-                if (user) {
-                    user.balance += request.amount;
-                    if (!user.transactions) user.transactions = [];
-                    user.transactions.push({
+                if (allUsers[request.userId]) {
+                    allUsers[request.userId].balance += request.amount;
+                    if (!allUsers[request.userId].transactions) allUsers[request.userId].transactions = [];
+                    allUsers[request.userId].transactions.push({
                         id: generateId(),
                         type: 'deposit',
                         amount: request.amount,
@@ -3067,28 +3291,13 @@
                         timestamp: new Date().toISOString(),
                         status: 'confirmed'
                     });
-                    usersData[request.userId] = user;
-                    localStorage.setItem('yasplit_users', JSON.stringify(usersData));
-                } else {
-                    user = {
-                        id: request.userId,
-                        telegramUsername: request.telegramUsername,
-                        balance: request.amount,
-                        transactions: [{
-                            id: generateId(),
-                            type: 'deposit',
-                            amount: request.amount,
-                            description: `Пополнение баланса (${request.methodName})`,
-                            timestamp: new Date().toISOString(),
-                            status: 'confirmed'
-                        }]
-                    };
-                    usersData[request.userId] = user;
-                    localStorage.setItem('yasplit_users', JSON.stringify(usersData));
+                    
+                    await saveUsersToStorage();
+                    sendBroadcastUpdate('users_updated');
                 }
                 
                 if (currentUser && currentUser.id === request.userId) {
-                    currentUser.balance = user.balance;
+                    currentUser.balance += request.amount;
                     if (!currentUser.transactions) currentUser.transactions = [];
                     currentUser.transactions.push({
                         id: generateId(),
@@ -3103,7 +3312,7 @@
                     updateStats();
                 }
                 
-                sendBroadcastUpdate();
+                sendBroadcastUpdate('payment_requests_updated');
                 
                 loadPaymentRequests(currentPaymentFilter);
                 updateCategoryCounts();
@@ -3136,7 +3345,6 @@
             showLoading();
             
             try {
-                let paymentRequests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
                 const requestIndex = paymentRequests.findIndex(req => req.id === requestId);
                 
                 if (requestIndex === -1) {
@@ -3149,9 +3357,9 @@
                 paymentRequests[requestIndex].cancelledBy = currentUser.telegramUsername;
                 paymentRequests[requestIndex].cancellationReason = reason;
                 
-                localStorage.setItem('yasplit_payment_requests', JSON.stringify(paymentRequests));
+                await savePaymentRequestsToStorage();
                 
-                sendBroadcastUpdate();
+                sendBroadcastUpdate('payment_requests_updated');
                 
                 await sendTelegramNotification(
                     `❌ ПЛАТЕЖ ОТМЕНЕН\n` +
@@ -3232,84 +3440,139 @@
             container.innerHTML = html;
         }
 
-        function updateAccountsInfo() {
-            if (!isAdmin) return;
+        async function loadAllUsers() {
+            if (!isAdmin) {
+                showNotification('Только администратор может просматривать пользователей', 'error');
+                return;
+            }
             
-            const container = document.getElementById('adminAccountsInfo');
-            if (!container) return;
-            
-            const availableCount = accounts.filter(acc => acc.status === 'available').length;
-            const soldCount = accounts.filter(acc => acc.status === 'sold').length;
-            const totalValue = accounts.reduce((sum, acc) => sum + (acc.price || 0), 0);
-            
-            container.innerHTML = `
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
-                    <div style="background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
-                        <div style="font-size: 32px; font-weight: 800; margin-bottom: 5px; color: var(--light);">${accounts.length}</div>
-                        <div style="color: var(--light-gray); font-size: 14px;">Всего аккаунтов</div>
-                    </div>
-                    <div style="background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
-                        <div style="font-size: 32px; font-weight: 800; margin-bottom: 5px; color: var(--success);">${availableCount}</div>
-                        <div style="color: var(--light-gray); font-size: 14px;">Доступно</div>
-                    </div>
-                    <div style="background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
-                        <div style="font-size: 32px; font-weight: 800; margin-bottom: 5px; color: var(--danger);">${soldCount}</div>
-                        <div style="color: var(--light-gray); font-size: 14px;">Продано</div>
-                    </div>
-                    <div style="background: var(--card-bg); padding: 20px; border-radius: var(--border-radius-sm); border: 1px solid var(--card-border);">
-                        <div style="font-size: 32px; font-weight: 800; margin-bottom: 5px; color: var(--primary-light);">${formatCurrency(totalValue)} ₽</div>
-                        <div style="color: var(--light-gray); font-size: 14px;">Общая стоимость</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function refreshAccountsData() {
             showLoading();
             try {
-                await loadAccountsFromJSON();
-                if (isAdmin) {
-                    updateAccountsInfo();
+                await loadUsersFromStorage();
+                
+                const usersList = document.getElementById('usersList');
+                if (!usersList) return;
+                
+                const usersArray = Object.values(allUsers);
+                usersArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                if (usersArray.length === 0) {
+                    usersList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <h3>Пользователи не найдены</h3>
+                            <div style="max-width: 300px; margin: 0 auto;">
+                                Нет зарегистрированных пользователей
+                            </div>
+                        </div>
+                    `;
+                    return;
                 }
-                showNotification('Данные аккаунтов обновлены', 'success');
+                
+                let html = '';
+                usersArray.forEach(user => {
+                    html += `
+                        <div class="user-list-item">
+                            <div class="user-list-info">
+                                <div class="user-list-username">${user.telegramUsername}</div>
+                                <div class="user-list-balance">Баланс: ${formatCurrency(user.balance)} ₽ • Покупок: ${user.purchasedAccounts?.length || 0}</div>
+                                <div style="font-size: 11px; color: var(--light-gray); margin-top: 3px;">
+                                    Регистрация: ${new Date(user.createdAt).toLocaleDateString('ru-RU')}
+                                    ${user.isAdmin ? ' • <span style="color: var(--primary);">Администратор</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="balance-form">
+                                <input type="number" class="balance-input" id="balance_${user.id}" value="${user.balance}" placeholder="Баланс">
+                                <button class="btn btn-sm" style="background: rgba(16,185,129,0.2); color: var(--success);" onclick="updateUserBalance('${user.id}')">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                usersList.innerHTML = html;
+                updateAdminStats();
             } catch (error) {
-                console.error('Refresh accounts error:', error);
-                showNotification('Ошибка при обновлении данных', 'error');
+                console.error('Load users error:', error);
+                showNotification('Ошибка при загрузке пользователей', 'error');
             } finally {
                 hideLoading();
             }
         }
 
-        function exportAccounts() {
+        async function updateUserBalance(userId) {
+            if (!isAdmin) {
+                showNotification('Только администратор может изменять баланс', 'error');
+                return;
+            }
+            
+            const balanceInput = document.getElementById(`balance_${userId}`);
+            if (!balanceInput) return;
+            
+            const newBalance = parseInt(balanceInput.value);
+            if (isNaN(newBalance) || newBalance < 0) {
+                showNotification('Введите корректную сумму', 'error');
+                return;
+            }
+            
+            showLoading();
+            try {
+                if (allUsers[userId]) {
+                    allUsers[userId].balance = newBalance;
+                    await saveUsersToStorage();
+                    sendBroadcastUpdate('users_updated');
+                    
+                    if (currentUser && currentUser.id === userId) {
+                        currentUser.balance = newBalance;
+                        localStorage.setItem('yasplit_user', JSON.stringify(currentUser));
+                        updateUserInfo();
+                        updateStats();
+                    }
+                    
+                    showNotification(`Баланс пользователя обновлен`, 'success');
+                    loadAllUsers();
+                }
+            } catch (error) {
+                console.error('Update balance error:', error);
+                showNotification('Ошибка при обновлении баланса', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function exportUsersData() {
             if (!isAdmin) {
                 showNotification('Только администратор может экспортировать данные', 'error');
                 return;
             }
             
-            const dataStr = JSON.stringify(accounts, null, 2);
+            const dataStr = JSON.stringify(allUsers, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `accounts_export_${new Date().toISOString().split('T')[0]}.json`;
+            link.download = `yasplit_users_${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
             
-            showNotification('Данные экспортированы', 'success');
+            showNotification('Данные пользователей экспортированы', 'success');
         }
 
         async function refreshData() {
             showLoading();
             try {
                 await loadAccountsFromJSON();
+                await loadUsersFromStorage();
+                await loadPaymentRequestsFromStorage();
                 loadPaymentRequests(currentPaymentFilter);
                 updateStats();
                 updateCategoryCounts();
                 loadRecentPurchases();
                 if (isAdmin) {
-                    updateAccountsInfo();
+                    updateAdminStats();
                 }
                 const paymentPage = document.getElementById('payment');
                 if (paymentPage && paymentPage.classList.contains('active')) {
@@ -3342,7 +3605,20 @@
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            if (sidebar) sidebar.classList.toggle('active');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar) {
+                sidebar.classList.toggle('active');
+                if (overlay) {
+                    overlay.classList.toggle('active');
+                }
+                
+                if (sidebar.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
         }
 
         function startAutoRefresh() {
@@ -3353,16 +3629,19 @@
             autoRefreshInterval = setInterval(async () => {
                 if (document.body.contains(document.getElementById('app'))) {
                     await loadAccountsFromJSON();
-                    loadPaymentRequests(currentPaymentFilter);
+                    await loadPaymentRequestsFromStorage();
                     
                     if (isAdmin) {
-                        const adminPage = document.getElementById('admin2731');
+                        const adminPage = document.getElementById('admin');
                         if (adminPage && adminPage.classList.contains('active')) {
                             updateAdminStats();
                         }
                     }
+                    
+                    updateStats();
+                    updateCategoryCounts();
                 }
-            }, 5000);
+            }, CONFIG.AUTO_REFRESH_INTERVAL);
         }
 
         function stopAutoRefresh() {
@@ -3372,19 +3651,29 @@
             }
         }
 
-        function debugPaymentRequests() {
+        function debugSystem() {
             const debugInfo = document.getElementById('debugInfo');
-            const requests = JSON.parse(localStorage.getItem('yasplit_payment_requests')) || [];
+            
+            const debugData = {
+                currentUser: currentUser ? {
+                    username: currentUser.telegramUsername,
+                    balance: currentUser.balance,
+                    isAdmin: isAdmin
+                } : null,
+                totalUsers: Object.keys(allUsers).length,
+                totalPaymentRequests: paymentRequests.length,
+                pendingRequests: paymentRequests.filter(r => r.status === 'pending').length,
+                localStorageKeys: Object.keys(localStorage).filter(key => key.startsWith('yasplit_'))
+            };
             
             debugInfo.innerHTML = `
-                <div><strong>Всего заявок:</strong> ${requests.length}</div>
-                <div><strong>Ожидающие:</strong> ${requests.filter(r => r.status === 'pending').length}</div>
-                <div><strong>Подтвержденные:</strong> ${requests.filter(r => r.status === 'confirmed').length}</div>
-                <div><strong>Отмененные:</strong> ${requests.filter(r => r.status === 'cancelled').length}</div>
-                <div style="margin-top: 10px;"><strong>Данные localStorage:</strong></div>
-                <pre style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; max-height: 200px; overflow-y: auto;">
-${JSON.stringify(requests, null, 2)}
-                </pre>
+                <div><strong>Текущий пользователь:</strong> ${debugData.currentUser ? debugData.currentUser.username : 'Не авторизован'}</div>
+                <div><strong>Баланс:</strong> ${debugData.currentUser ? debugData.currentUser.balance + ' ₽' : 'Н/Д'}</div>
+                <div><strong>Статус админа:</strong> ${debugData.currentUser?.isAdmin ? 'Да' : 'Нет'}</div>
+                <div><strong>Всего пользователей в системе:</strong> ${debugData.totalUsers}</div>
+                <div><strong>Всего заявок:</strong> ${debugData.totalPaymentRequests}</div>
+                <div><strong>Ожидающие заявки:</strong> ${debugData.pendingRequests}</div>
+                <div><strong>Ключи в localStorage:</strong> ${debugData.localStorageKeys.join(', ')}</div>
             `;
         }
 
@@ -3400,11 +3689,12 @@ ${JSON.stringify(requests, null, 2)}
         window.buyAccount = buyAccount;
         window.confirmPayment = confirmPayment;
         window.cancelPayment = cancelPayment;
-        window.refreshAccountsData = refreshAccountsData;
-        window.exportAccounts = exportAccounts;
+        window.loadAllUsers = loadAllUsers;
+        window.updateUserBalance = updateUserBalance;
+        window.exportUsersData = exportUsersData;
         window.logout = logout;
         window.telegramLogin = telegramLogin;
-        window.debugPaymentRequests = debugPaymentRequests;
+        window.debugSystem = debugSystem;
     </script>
 </body>
 </html>
